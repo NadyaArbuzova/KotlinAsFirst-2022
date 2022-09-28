@@ -2,8 +2,10 @@
 
 package lesson3.task1
 
+import java.lang.Math.pow
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -226,7 +228,19 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var x1 = x.pow(3.0)
+    var i = 3
+    var fact = factorial(i)
+    var res = x
+    while (x1 / fact >= eps) {
+        res -= x1 / fact
+        x1 *= x * (-x)
+        i += 2
+        fact = factorial(i)
+    }
+    return res
+}
 
 /**
  * Средняя (4 балла)
