@@ -3,10 +3,7 @@
 package lesson3.task1
 
 import java.lang.Math.pow
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -229,11 +226,11 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    var x1 = x.pow(3.0)
+    var x1 = (x % (2 * PI)).pow(3.0)
     var i = 3
     var fact = factorial(i)
-    var res = x
-    while (x1 / fact >= eps) {
+    var res = x % (2 * PI)
+    while (abs(x1 / fact) >= eps) {
         res -= x1 / fact
         x1 *= x * (-x)
         i += 2
@@ -251,7 +248,19 @@ fun sin(x: Double, eps: Double): Double {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var x1 = (x % (2 * PI)).pow(2.0)
+    var i = 2
+    var fact = factorial(i)
+    var res = 1.0
+    while (abs(x1 / fact) >= eps) {
+        res -= x1 / fact
+        x1 *= x * (-x)
+        i += 2
+        fact = factorial(i)
+    }
+    return res
+}
 
 /**
  * Сложная (4 балла)
