@@ -263,7 +263,17 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val s = "0123456789abcdefghijklmnopqrstuvwxyz"
+    var res = ""
+    var n1 = n
+    if (n == 0) res = "0"
+    while (n1 > 0) {
+        res = s[n1 % base] + res
+        n1 /= base
+    }
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -272,7 +282,13 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var res = 0
+    for (i in digits.indices) {
+        res += digits[digits.size - 1 - i] * (base.toDouble().pow(i.toDouble())).toInt()
+    }
+    return res
+}
 
 /**
  * Сложная (4 балла)
@@ -286,7 +302,14 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    val s = "0123456789abcdefghijklmnopqrstuvwxyz"
+    var res = 0
+    for (i in str.indices) {
+        res += s.indexOf(str[str.length - 1 - i]) * (base.toDouble().pow(i.toDouble())).toInt()
+    }
+    return res
+}
 
 /**
  * Сложная (5 баллов)
