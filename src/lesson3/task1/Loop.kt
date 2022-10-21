@@ -85,12 +85,17 @@ fun digitNumber(n: Int): Int =
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int =
-    when (n) {
-        1 -> 1
-        2 -> 1
-        else -> fib(n - 2) + fib(n - 1)
+fun fib(n: Int): Int {
+    var fib1 = 1
+    var fib2 = 1
+    var fib: Int
+    for (i in 2 until n) {
+        fib = fib1
+        fib1 = fib2
+        fib2 += fib
     }
+    return fib2
+}
 
 /**
  * Простая (2 балла)
@@ -98,7 +103,7 @@ fun fib(n: Int): Int =
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..n) {
+    for (i in 2..(sqrt(n.toDouble())).toInt() + 1) {
         if (n % i == 0) return i
     }
     return n
@@ -150,10 +155,15 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    for (i in (max(n, m))..m * n) {
-        if (i % m == 0 && i % n == 0) return i
+    var maxMN = max(m, n)
+    var minMN = min(m, n)
+    var nod = maxMN
+    while (maxMN != minMN) {
+        nod = maxMN - minMN
+        maxMN = max(nod, minMN)
+        minMN = min(nod, minMN)
     }
-    return n * m
+    return m * n / nod
 }
 
 /**
@@ -163,12 +173,7 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..min(n, m)) {
-        if (m % i == 0 && n % i == 0) return false
-    }
-    return true
-}
+fun isCoPrime(m: Int, n: Int): Boolean = m * n == lcm(m, n)
 
 /**
  * Средняя (3 балла)
