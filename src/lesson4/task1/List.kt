@@ -144,10 +144,12 @@ fun mean(list: List<Double>): Double = when {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = when {
-    list.isEmpty() || list.sum() == 0.0 -> list
-    else -> list.map { it - list.average() } as MutableList<Double>
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val m = mean(list)
+    list.replaceAll { it - m }
+    return list
 }
+
 /**
  * Средняя (3 балла)
  *
@@ -205,17 +207,9 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  */
 fun factorize(n: Int): List<Int> {
     val list = mutableListOf<Int>()
-    var flag: Boolean
     var n1 = n
     for (i in 2..sqrt(n.toDouble()).toInt() + 1) {
-        flag = true
-        for (j in 2 until i) {
-            if (i % j == 0) {
-                flag = false
-                break
-            }
-        }
-        while (n1 % i == 0 && flag) {
+        while (n1 % i == 0) {
             list.add(i)
             n1 /= i
         }
@@ -244,10 +238,10 @@ fun convert(n: Int, base: Int): List<Int> {
     val list = mutableListOf<Int>()
     var n1 = n
     while (n1 > 0) {
-        list.add(0,n1 % base)
+        list.add(n1 % base)
         n1 /= base
     }
-    return list
+    return list.reversed()
 }
 
 /**
