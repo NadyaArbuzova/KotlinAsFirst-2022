@@ -231,15 +231,14 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    var x1 = (x % (2 * PI)).pow(3.0)
+    val x1 = x % (2 * PI)
     var i = 3
-    var fact = factorial(i)
-    var res = x % (2 * PI)
-    while (abs(x1 / fact) >= eps) {
-        res -= x1 / fact
-        x1 *= x * (-x)
+    var f = -1
+    var res = x1
+    while (abs(x1.pow(i) / factorial(i)) >= eps) {
+        res += f * x1.pow(i) / factorial(i)
+        f = -f
         i += 2
-        fact = factorial(i)
     }
     return res
 }
@@ -254,15 +253,14 @@ fun sin(x: Double, eps: Double): Double {
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
 fun cos(x: Double, eps: Double): Double {
-    var x1 = (x % (2 * PI)).pow(2.0)
+    val x1 = x % (2 * PI)
     var i = 2
-    var fact = factorial(i)
+    var f = -1
     var res = 1.0
-    while (abs(x1 / fact) >= eps) {
-        res -= x1 / fact
-        x1 *= x * (-x)
+    while (abs(x1.pow(i) / factorial(i)) >= eps) {
+        res += f * x1.pow(i) / factorial(i)
+        f = -f
         i += 2
-        fact = factorial(i)
     }
     return res
 }
