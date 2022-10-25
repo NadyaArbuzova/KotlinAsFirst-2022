@@ -173,12 +173,9 @@ fun times(a: List<Int>, b: List<Int>): Any {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int {
-    var res = 0
-    for (i in p.indices) {
-        res += p[i] * x.toDouble().pow(i.toDouble()).toInt()
-    }
-    return res
+fun polynom(p: List<Int>, x: Int): Int = when {
+    p.isEmpty() -> 0
+    else -> p.reversed().reduce { a, b -> a * x + b }
 }
 
 /**
@@ -257,14 +254,14 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val s = "0123456789abcdefghijklmnopqrstuvwxyz"
-    var res = ""
+    val res = StringBuilder()
     var n1 = n
-    if (n == 0) res = "0"
+    if (n == 0) return "0"
     while (n1 > 0) {
-        res = s[n1 % base] + res
+        res.append(s[n1 % base])
         n1 /= base
     }
-    return res
+    return res.reversed().toString()
 }
 
 /**
