@@ -328,4 +328,55 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val n0 = mutableListOf<String>(
+        "", "один", "два", "три", "четыре", "пять",
+        "шесть", "семь", "восемь", "девять"
+    )
+    val n11 = mutableListOf<String>(
+        "", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
+        "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать",
+    )
+    val n12 = mutableListOf<String>(
+        "", "десять", "двадцать", "тридцать", "сорок", "пятьдесят",
+        "шестьдесят", "семьдесят", "восемьдесят ", "девяносто "
+    )
+    val n2 = mutableListOf<String>(
+        "", "сто", "двести", "триста", "четыреста", "пятьсот",
+        "шестьсот", "семьсот", "восемьсот", "девятьсот"
+    )
+    val n3 = mutableListOf<String>("одна тысяча", "две тысячи", "тысячи", "тысяч")
+    val res = mutableListOf<String>()
+    if (n > 999) {
+        when (n / 1000 % 10) {
+            1 -> {
+                res.add(russian(n / 10000 * 10))
+                res.add(n3[0])
+            }
+
+            2 -> {
+                res.add(russian(n / 10000 * 10))
+                res.add(n3[1])
+            }
+
+            in 3..4 -> {
+                res.add(russian(n / 1000))
+                res.add(n3[2])
+            }
+
+            else -> {
+                res.add(russian(n / 1000))
+                res.add(n3[3])
+            }
+        }
+    }
+    res.add(n2[n % 1000 / 100])
+    when (n % 100) {
+        in 11..19 -> res.add(n11[n % 10])
+        else -> {
+            res.add(n12[n % 100 / 10])
+            res.add(n0[n % 10])
+        }
+    }
+    return res.toString().replace(",", "").replace("[", "").replace("]", "")
+}
