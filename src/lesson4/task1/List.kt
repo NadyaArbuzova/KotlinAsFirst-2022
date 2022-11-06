@@ -350,32 +350,32 @@ fun russian(n: Int): String {
     if (n > 999) {
         when (n / 1000 % 10) {
             1 -> {
-                res.add(russian(n / 10000 * 10))
+                for (i in russian(n / 10000 * 10).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[0])
             }
 
             2 -> {
-                res.add(russian(n / 10000 * 10))
+                for (i in russian(n / 10000 * 10).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[1])
             }
 
             in 3..4 -> {
-                res.add(russian(n / 1000))
+                for (i in russian(n / 1000).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[2])
             }
 
             else -> {
-                res.add(russian(n / 1000))
+                for (i in russian(n / 1000).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[3])
             }
         }
     }
-    res.add(n2[n % 1000 / 100])
+    if (n2[n % 1000 / 100].isNotEmpty()) res.add(n2[n % 1000 / 100])
     when (n % 100) {
         in 11..19 -> res.add(n11[n % 10])
         else -> {
-            res.add(n12[n % 100 / 10])
-            res.add(n0[n % 10])
+            if (n12[n % 100 / 10].isNotEmpty()) res.add(n12[n % 100 / 10])
+            if (n0[n % 10].isNotEmpty()) res.add(n0[n % 10])
         }
     }
     return res.toString().replace(",", "").replace("[", "").replace("]", "")
