@@ -348,18 +348,18 @@ fun russian(n: Int): String {
     val n3 = mutableListOf("одна тысяча", "две тысячи", "тысячи", "тысяч")
     val res = mutableListOf<String>()
     if (n > 999) {
-        when (n / 1000 % 10) {
-            1 -> {
+        when {
+            n / 1000 % 10 == 1 && n / 1000 % 100 != 11 -> {
                 for (i in russian(n / 10000 * 10).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[0])
             }
 
-            2 -> {
+            n / 1000 % 10 == 2 -> {
                 for (i in russian(n / 10000 * 10).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[1])
             }
 
-            in 3..4 -> {
+            n / 1000 % 10 in 3..4 && n / 1000 % 100 !in 13..14 -> {
                 for (i in russian(n / 1000).split(" ")) if (i.isNotEmpty()) res.add(i)
                 res.add(n3[2])
             }
