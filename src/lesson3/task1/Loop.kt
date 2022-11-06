@@ -140,12 +140,12 @@ fun maxDivisor(n: Int): Int {
 fun collatzSteps(x: Int): Int {
     var i = 0
     var x1 = x
-    while (true) {
-        if (x1 == 1) return i
+    while (x1 != 1) {
         if (x1 % 2 == 0) x1 /= 2
         else x1 = 3 * x1 + 1
         i += 1
     }
+    return i
 }
 
 /**

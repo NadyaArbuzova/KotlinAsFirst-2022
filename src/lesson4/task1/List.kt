@@ -309,10 +309,10 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val n0 = mutableListOf<String>("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
-    val n1 = mutableListOf<String>("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
-    val n2 = mutableListOf<String>("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
-    val n3 = mutableListOf<String>("", "M", "MM", "MMM")
+    val n0 = mutableListOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val n1 = mutableListOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+    val n2 = mutableListOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
+    val n3 = mutableListOf("", "M", "MM", "MMM")
     val res = StringBuilder()
     res.append(n3[n / 1000])
     res.append(n2[n % 1000 / 100])
@@ -329,23 +329,23 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val n0 = mutableListOf<String>(
+    val n0 = mutableListOf(
         "", "один", "два", "три", "четыре", "пять",
         "шесть", "семь", "восемь", "девять"
     )
-    val n11 = mutableListOf<String>(
+    val n11 = mutableListOf(
         "", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
         "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать",
     )
-    val n12 = mutableListOf<String>(
+    val n12 = mutableListOf(
         "", "десять", "двадцать", "тридцать", "сорок", "пятьдесят",
         "шестьдесят", "семьдесят", "восемьдесят ", "девяносто "
     )
-    val n2 = mutableListOf<String>(
+    val n2 = mutableListOf(
         "", "сто", "двести", "триста", "четыреста", "пятьсот",
         "шестьсот", "семьсот", "восемьсот", "девятьсот"
     )
-    val n3 = mutableListOf<String>("одна тысяча", "две тысячи", "тысячи", "тысяч")
+    val n3 = mutableListOf("одна тысяча", "две тысячи", "тысячи", "тысяч")
     val res = mutableListOf<String>()
     if (n > 999) {
         when (n / 1000 % 10) {
