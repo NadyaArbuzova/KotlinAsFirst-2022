@@ -292,10 +292,10 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val s = "0123456789abcdefghijklmnopqrstuvwxyz"
     var res = 0
     for (i in str.indices) {
-        res += s.indexOf(str[str.length - 1 - i]) * (base.toDouble().pow(i.toDouble())).toInt()
+        res += (if (str[i] in "1234567890") ((str[i] - '9') + 9) else ((str[i] - 'a') + 10)) * (base.toDouble()
+            .pow((str.length - 1 - i).toDouble())).toInt()
     }
     return res
 }
