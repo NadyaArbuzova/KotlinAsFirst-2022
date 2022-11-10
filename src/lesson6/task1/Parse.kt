@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import java.lang.Exception
+import java.lang.NumberFormatException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +77,23 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val s = str.split(" ")
+    return try {
+        val day = s[0].toInt()
+        val month = listOf(
+            "", "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря"
+        ).indexOf(s[1])
+        val year = s[2].toInt()
+        if (month == -1 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
+            || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
+        ) throw Exception()
+        String.format("%02d.%02d.%02d", day, month, year)
+    } catch (e: Exception) {
+        ""
+    }
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +105,25 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val s = digital.split(".")
+    return try {
+        val day = s[0].toInt()
+        val month = s[1].toInt()
+        val year = s[2].toInt()
+        if (s.size != 3 || month !in 1..12 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
+            || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
+        ) throw Exception()
+        String.format(
+            "%s %s %s", day, listOf(
+                "", "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                "августа", "сентября", "октября", "ноября", "декабря"
+            )[month], year
+        )
+    } catch (e: Exception) {
+        ""
+    }
+}
 
 /**
  * Средняя (4 балла)
@@ -102,7 +139,14 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String = try {
+    val res = Regex("""[^+0123456789]""").replace(phone, "")
+    if (phone.contains(Regex("""\(\)""")) || res.indexOf("+") > 0
+        || phone.contains(Regex("""[^-+()0987654321 ]"""))) throw Exception()
+    String.format("%s", res)
+} catch (e: Exception) {
+    ""
+}
 
 /**
  * Средняя (5 баллов)

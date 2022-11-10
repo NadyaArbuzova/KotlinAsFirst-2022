@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import ru.spbstu.wheels.NullableMonad.filter
+import ru.spbstu.wheels.defaultCopy
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -246,7 +249,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val a = mutableSetOf<Char>()
+    for (i in word) {
+        a.add(i)
+    }
+    return chars.containsAll(a)
+}
 
 /**
  * Средняя (4 балла)
@@ -260,7 +269,15 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    for (i in list) {
+        if (i !in res) {
+            res[i] = 1
+        } else res[i] = res[i]!! + 1
+    }
+    return res.filterValues { it > 1 }
+}
 
 /**
  * Средняя (3 балла)

@@ -294,7 +294,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
 fun decimalFromString(str: String, base: Int): Int {
     var res = 0
     for (i in str.indices) {
-        res += (if (str[i] in "1234567890") ((str[i] - '9') + 9) else ((str[i] - 'a') + 10)) * (base.toDouble()
+        res += (if (str[i] in "1234567890") (str[i] - '0') else ((str[i] - 'a') + 10)) * (base.toDouble()
             .pow((str.length - 1 - i).toDouble())).toInt()
     }
     return res
