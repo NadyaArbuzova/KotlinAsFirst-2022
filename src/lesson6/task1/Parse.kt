@@ -86,7 +86,7 @@ fun dateStrToDigit(str: String): String {
             "августа", "сентября", "октября", "ноября", "декабря"
         ).indexOf(s[1])
         val year = s[2].toInt()
-        if (year !in 1980..2122 || month == -1 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
+        if (year !in 1922..2122 || month == -1 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
             || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
         ) throw Exception()
         String.format("%02d.%02d.%d", day, month, year)
@@ -111,7 +111,7 @@ fun dateDigitToStr(digital: String): String {
         val day = s[0].toInt()
         val month = s[1].toInt()
         val year = s[2].toInt()
-        if (year !in 1980..2122 || s.size != 3 || month !in 1..12 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
+        if (year !in 1922..2122 || s.size != 3 || month !in 1..12 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
             || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
         ) throw Exception()
         String.format(
