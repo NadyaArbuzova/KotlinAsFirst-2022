@@ -89,7 +89,7 @@ fun dateStrToDigit(str: String): String {
         if (month == -1 || month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) && day > 29 || day > 28)
             || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
         ) throw Exception()
-        String.format("%02d.%02d.%02d", day, month, year)
+        String.format("%02d.%02d.%d", day, month, year)
     } catch (e: Exception) {
         ""
     }
