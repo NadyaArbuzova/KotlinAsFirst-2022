@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import ru.spbstu.wheels.NullableMonad.filter
+import ru.spbstu.wheels.asMap
 import ru.spbstu.wheels.defaultCopy
 
 // Урок 5: ассоциативные массивы и множества
@@ -346,7 +347,21 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "GoodGnome" to setOf()
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val res = mutableMapOf<String, Set<String>>()
+    for ((key, set) in friends) {
+        res[key] = set
+        for (arg in set) {
+            if (arg !in res) res[arg] = setOf()
+        }
+    }
+    for ((key, set) in res) {
+        for (arg in set) {
+            res[key] = res[key]!! + (res[arg]!! - setOf(key))
+        }
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)
