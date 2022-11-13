@@ -2,6 +2,7 @@
 
 package lesson6.task1
 
+import ru.spbstu.wheels.asList
 import java.lang.Exception
 import java.lang.NumberFormatException
 
@@ -158,7 +159,13 @@ fun flattenPhoneNumber(phone: String): String = try {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int = try {
+    val a = mutableSetOf<Int>()
+    for (i in jumps.split(Regex("""[-% ]"""))) if (i.isNotEmpty()) a.add(i.toInt())
+    a.max()
+} catch (e: Exception){
+    -1
+}
 
 /**
  * Сложная (6 баллов)
