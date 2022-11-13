@@ -408,21 +408,11 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun maxPrice(weight: List<Int>, price: List<Int>, capacity: Int, tr: List<String>): Pair<Int, List<String>> = when {
-    weight.isEmpty() -> Pair(0, listOf())
-    weight.sum() > capacity -> maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
-    maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1)).first >
-            maxPrice(
-                weight.dropLast(1),
-                price.dropLast(1),
-                capacity,
-                tr.dropLast(1)
-            ).first + price[price.size - 1] -> maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
-
-    else -> Pair(
-        maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1)).first + price[price.size - 1],
-        maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1)).second + tr[tr.size - 1]
-    )
+fun maxPrice(weight: List<Int>, price: List<Int>, capacity: Int, tr: List<String>): Pair<Int, List<String>> {
+    if (weight.isEmpty()) return Pair(0, listOf())
+    val m = maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
+    return if (weight.sum() > capacity || m.first > m.first + price[price.size - 1]) m
+    else Pair(m.first + price[price.size - 1], m.second + tr[tr.size - 1])
 }
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
