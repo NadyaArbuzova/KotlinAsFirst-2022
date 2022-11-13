@@ -5,6 +5,7 @@ package lesson5.task1
 import ru.spbstu.wheels.NullableMonad.filter
 import ru.spbstu.wheels.asMap
 import ru.spbstu.wheels.defaultCopy
+import kotlin.math.max
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -407,4 +408,35 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun maxPrice(weight: List<Int>, price: List<Int>, capacity: Int, tr: List<String>): Pair<Int, List<String>> = when {
+    weight.isEmpty() -> Pair(0, listOf())
+    weight.sum() > capacity -> maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
+    maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1)).first >
+            maxPrice(
+                weight.dropLast(1),
+                price.dropLast(1),
+                capacity,
+                tr.dropLast(1)
+            ).first + price[price.size - 1] -> maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
+
+    else -> Pair(
+        maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1)).first + price[price.size - 1],
+        maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1)).second + tr[tr.size - 1]
+    )
+}
+
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val weight = mutableListOf<Int>()
+    val price = mutableListOf<Int>()
+    val tr = mutableListOf<String>()
+    for ((key, pair) in treasures) {
+        tr.add(key)
+        weight.add(pair.first)
+        price.add(pair.second)
+    }
+    val res = mutableSetOf<String>()
+    for (i in maxPrice(weight, price, capacity, tr).second) {
+        res.add(i)
+    }
+    return res
+}
