@@ -2,9 +2,7 @@
 
 package lesson6.task1
 
-import ru.spbstu.wheels.asList
-import java.lang.Exception
-import java.lang.NumberFormatException
+import lesson2.task2.daysInMonth
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -87,9 +85,7 @@ fun dateStrToDigit(str: String): String {
             "августа", "сентября", "октября", "ноября", "декабря"
         ).indexOf(s[1])
         val year = s[2].toInt()
-        if (month == -1 || month == 2 && ((year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)) && day > 28 || day > 29)
-            || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
-        ) throw Exception()
+        if (month == -1 || daysInMonth(month, year) < day) throw Exception()
         String.format("%02d.%02d.%d", day, month, year)
     } catch (e: Exception) {
         ""
@@ -112,9 +108,7 @@ fun dateDigitToStr(digital: String): String {
         val day = s[0].toInt()
         val month = s[1].toInt()
         val year = s[2].toInt()
-        if (s.size != 3 || month !in 1..12 || month == 2 && ((year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)) && day > 28 || day > 29)
-            || month in listOf(4, 6, 9, 11) && day > 30 || day > 31
-        ) throw Exception()
+        if (s.size != 3 || month !in 1..12 || daysInMonth(month, year) < day) throw Exception()
         String.format(
             "%s %s %s", day, listOf(
                 "", "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
@@ -143,7 +137,8 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String = try {
     val res = Regex("""[^+0123456789]""").replace(phone, "")
     if (phone.contains(Regex("""\(\)""")) || res.indexOf("+") > 0
-        || phone.contains(Regex("""[^-+()0987654321 ]"""))) throw Exception()
+        || phone.contains(Regex("""[^-+()0987654321 ]"""))
+    ) throw Exception()
     String.format("%s", res)
 } catch (e: Exception) {
     ""
@@ -163,7 +158,7 @@ fun bestLongJump(jumps: String): Int = try {
     val a = mutableSetOf<Int>()
     for (i in jumps.split(Regex("""[-% ]"""))) if (i.isNotEmpty()) a.add(i.toInt())
     a.max()
-} catch (e: Exception){
+} catch (e: Exception) {
     -1
 }
 

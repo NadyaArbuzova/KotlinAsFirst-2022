@@ -161,8 +161,8 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val c = mutableSetOf<String>()
-    for (i in a) {
-        if (i in b) {
+    for (i in a.toSet()) {
+        if (i in b.toSet()) {
             c.add(i)
         }
     }
@@ -253,8 +253,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val a = mutableSetOf<Char>()
-    val c = chars.map { it.lowercaseChar() }
-    for (i in word) {
+    val c = chars.map { it.lowercaseChar() }.toSet()
+    for (i in word.toSet()) {
         a.add(i.lowercaseChar())
     }
     return c.containsAll(a)
@@ -294,21 +294,14 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun wordToSet(word: String): Set<Char> {
-    val res = mutableSetOf<Char>()
-    for (i in word) {
-        res.add(i)
-    }
-    return res
-}
 fun hasAnagrams(words: List<String>): Boolean {
     val a = mutableMapOf<Int, MutableList<Set<Char>>>()
     for (i in words) {
         if (i.length !in a) {
-            a[i.length] = mutableListOf(wordToSet(i))
+            a[i.length] = mutableListOf(i.toSet())
         } else {
-            if (a[i.length]?.contains(wordToSet(i)) == true) return true
-            else a[i.length]?.add(wordToSet(i))
+            if (a[i.length]?.contains(i.toSet()) == true) return true
+            else a[i.length]?.add(i.toSet())
         }
     }
     return false
@@ -411,8 +404,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
 fun maxPrice(weight: List<Int>, price: List<Int>, capacity: Int, tr: List<String>): Pair<Int, List<String>> {
     if (weight.isEmpty()) return Pair(0, listOf())
     val m = maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
-    return if (weight.sum() > capacity || m.first > m.first + price[price.size - 1]) m
-    else Pair(m.first + price[price.size - 1], m.second + tr[tr.size - 1])
+    var m1 = maxPrice(weight.dropLast(1), price.dropLast(1), capacity - weight.last(), tr.dropLast(1))
+    m1 = Pair(m1.first + price[price.size - 1], m1.second + tr[tr.size - 1])
+    return if (weight.sum() > capacity || m.first > m1.first) m
+    else m1
 }
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
