@@ -5,6 +5,7 @@ package lesson6.task1
 import lesson2.task2.daysInMonth
 import java.io.IOException
 import java.lang.NullPointerException
+import java.lang.NumberFormatException
 import java.lang.RuntimeException
 import java.security.InvalidParameterException
 import java.util.IllegalFormatException
@@ -94,6 +95,8 @@ fun dateStrToDigit(str: String): String {
         String.format("%02d.%02d.%d", day, month, year)
     } catch (e: IOException) {
         ""
+    } catch (e: NumberFormatException) {
+        ""
     }
 }
 
@@ -121,6 +124,8 @@ fun dateDigitToStr(digital: String): String {
             )[month], year
         )
     } catch (e: IOException) {
+        ""
+    } catch (e: NumberFormatException) {
         ""
     }
 }
