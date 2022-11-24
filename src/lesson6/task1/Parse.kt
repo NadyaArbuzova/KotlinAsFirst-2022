@@ -4,6 +4,7 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 import java.io.IOException
+import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 import java.lang.NumberFormatException
 import java.lang.RuntimeException
@@ -97,6 +98,8 @@ fun dateStrToDigit(str: String): String {
         ""
     } catch (e: NumberFormatException) {
         ""
+    } catch (e: IndexOutOfBoundsException){
+        ""
     }
 }
 
@@ -127,6 +130,8 @@ fun dateDigitToStr(digital: String): String {
         ""
     } catch (e: NumberFormatException) {
         ""
+    } catch (e: IndexOutOfBoundsException){
+        ""
     }
 }
 
@@ -145,7 +150,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String = try {
-    if (!Regex("""^(\+\d*)?[ -]*(\((\d+[ -]*)+\))?[ -]*(\d+[ -]*)*$""").matches(phone)) throw IOException()
+    if (!Regex("""^(\+\d*)?[ -]*(\((\d+[ -]*)+\))?[ -]*(\d+[ -]*)+$""").matches(phone)) throw IOException()
     Regex("""[^+0-9]""").replace(phone, "")
 } catch (e: IOException) {
     ""
