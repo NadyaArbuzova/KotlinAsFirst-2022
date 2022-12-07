@@ -12,6 +12,7 @@ import java.lang.NumberFormatException
 import java.lang.RuntimeException
 import java.security.InvalidParameterException
 import java.util.IllegalFormatException
+import kotlin.math.max
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -223,7 +224,14 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (!Regex("""^([А-я]* \d+(\.\d)?; )*([А-я]* \d+(\.\d)?)$""").matches(description)) return ""
+    var res = Pair("", 0.0)
+    for (i in description.split("; ")) {
+        if (res.second < i.split(" ")[1].toDouble()) res = Pair(i.split(" ")[0], i.split(" ")[1].toDouble())
+    }
+    return res.first
+}
 
 /**
  * Сложная (6 баллов)
