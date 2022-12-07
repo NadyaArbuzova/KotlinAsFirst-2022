@@ -179,7 +179,16 @@ fun bestLongJump(jumps: String): Int = try {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    if (!Regex("""^(\d* [%+-]+ )*(\d* [%+-]+)$""").matches(jumps)) return -1
+    val a = jumps.split(Regex("""[+% -]+""")).dropLast(1)
+    val b = jumps.split(Regex("""\d+""")).drop(1)
+    var res = 0
+    for (i in a.indices) {
+        if ("+" in b[i]) res = maxOf(res, a[i].toInt())
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)
@@ -266,3 +275,45 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+fun myFun(table: Map<String, Int>, taxes: String): Map<String, Int> {
+    return try {
+        val res = mutableMapOf<String, Int>()
+        for (i in taxes.split("\n")) {
+            val a = i.split(" - ")
+            if (a.size != 3) throw IllegalArgumentException()
+            val p = if (a[1] !in table) 0.13
+            else table[a[1]]!!.toDouble() / 100.0
+            if (a[0] !in res) {
+                res[a[0]] = (p * a[2].toDouble()).toInt()
+            } else {
+                res[a[0]] = (res[a[0]]!! + p * a[2].toDouble()).toInt()
+            }
+        }
+        res.entries.sortedBy { it.value }.toMap()
+    } catch (e: IllegalArgumentException){
+        mapOf("" to -1)
+    }
+}
+
+fun myFun2(texes: String, money: Int): Int = try {
+    var res = 0
+    var m = 0
+    if (!Regex("""^(\d+ у\.е\. - \d+%; )+else - \d+%$""").matches(texes)) throw IllegalArgumentException()
+    for (i in texes.split("; ")) {
+        if ("у.е." in i) {
+            val s = i.split(" у.е. - ")[0].toInt()
+            val p = i.split(" у.е. - ")[1].dropLast(1).toInt()
+            if (money > s) {
+                res += (s - m) * p / 100
+            } else {
+                res += (money - m) * p / 100
+                break
+            }
+            m = s
+        } else res += (money - m) * i.split(" - ")[1].dropLast(1).toInt() / 100
+    }
+    res
+} catch (e: IllegalArgumentException){
+    -1
+}

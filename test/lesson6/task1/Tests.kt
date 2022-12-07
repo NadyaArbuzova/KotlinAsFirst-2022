@@ -150,4 +150,31 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
     }
+
+    @Test
+    fun myFun(){
+        assertEquals(mapOf("" to -1), lesson6.task1.myFun(mapOf(), ""))
+        assertEquals(
+            mapOf("ООО Горняк" to 12000, "Вбербанк" to 17100, "Политек Ведра" to 1170000), lesson6.task1.myFun(
+                mapOf(
+                    "Производство напитков" to 4, "Горнодобывающая промышлинность" to 12,
+                    "Банковские операции" to 9
+                ),"ООО Горняк - Горнодобывающая промышлинность - 100000\nВбербанк - Банковские операции - 190000\nПолитек Ведра - Образование - 9000000"
+            )
+        )
+    }
+    @Test
+    fun myFun2(){
+        assertEquals(
+            13000,
+            lesson6.task1.myFun2("20000 у.е. - 0%; 40000 у.е. - 5%; 60000 у.е. - 10%; else - 25%", 100000)
+        )
+        assertEquals(
+            0,
+            lesson6.task1.myFun2("20000 у.е. - 0%; 40000 у.е. - 5%; 60000 у.е. - 10%; else - 25%", 10000)
+        )
+        assertEquals(-1, lesson6.task1.myFun2("2000 - 8%", 10))
+        assertEquals(-1, lesson6.task1.myFun2("2000 у.е. - 8%; 3000 - 1%", 10))
+        assertEquals(-1, lesson6.task1.myFun2("2000 у.е. - 8%; 3000 - 1; else - 3%", 10))
+    }
 }
