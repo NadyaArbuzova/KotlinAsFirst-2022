@@ -3,7 +3,9 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import ru.spbstu.wheels.toMap
 import java.io.IOException
+import java.lang.IllegalArgumentException
 import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 import java.lang.NumberFormatException
@@ -92,10 +94,8 @@ fun dateStrToDigit(str: String): String {
             "августа", "сентября", "октября", "ноября", "декабря"
         ).indexOf(s[1])
         val year = s[2].toInt()
-        if (month == -1 || daysInMonth(month, year) < day) throw IOException()
+        if (month == -1 || daysInMonth(month, year) < day) ""
         String.format("%02d.%02d.%d", day, month, year)
-    } catch (e: IOException) {
-        ""
     } catch (e: NumberFormatException) {
         ""
     } catch (e: IndexOutOfBoundsException){
@@ -119,15 +119,11 @@ fun dateDigitToStr(digital: String): String {
         val day = s[0].toInt()
         val month = s[1].toInt()
         val year = s[2].toInt()
-        if (s.size != 3 || month !in 1..12 || daysInMonth(month, year) < day) throw IOException()
-        String.format(
-            "%s %s %s", day, listOf(
-                "", "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
-                "августа", "сентября", "октября", "ноября", "декабря"
-            )[month], year
-        )
-    } catch (e: IOException) {
-        ""
+        if (s.size != 3 || month !in 1..12 || daysInMonth(month, year) < day) ""
+        "$day " + listOf(
+            "", "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря"
+        )[month] + " $year"
     } catch (e: NumberFormatException) {
         ""
     } catch (e: IndexOutOfBoundsException){
@@ -149,11 +145,9 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = try {
-    if (!Regex("""^(\+\d*)?[ -]*(\((\d+[ -]*)+\))?[ -]*(\d+[ -]*)+$""").matches(phone)) throw IOException()
-    Regex("""[^+0-9]""").replace(phone, "")
-} catch (e: IOException) {
-    ""
+fun flattenPhoneNumber(phone: String): String {
+    return if (!Regex("""^(\+\d*)?[ -]*(\((\d+[ -]*)+\))?[ -]*(\d+[ -]*)+$""").matches(phone)) ""
+    else Regex("""[^+0-9]""").replace(phone, "")
 }
 
 /**

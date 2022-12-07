@@ -161,8 +161,9 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val c = mutableSetOf<String>()
+    val bSet = b.toSet();
     for (i in a.toSet()) {
-        if (i in b.toSet()) {
+        if (i in bSet) {
             c.add(i)
         }
     }
@@ -401,14 +402,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun maxPrice(weight: List<Int>, price: List<Int>, capacity: Int, tr: List<String>): Pair<Int, List<String>> {
-    if (weight.isEmpty()) return Pair(0, listOf())
-    val m = maxPrice(weight.dropLast(1), price.dropLast(1), capacity, tr.dropLast(1))
-    var m1 = maxPrice(weight.dropLast(1), price.dropLast(1), capacity - weight.last(), tr.dropLast(1))
-    m1 = Pair(m1.first + price[price.size - 1], m1.second + tr[tr.size - 1])
-    return if (weight.sum() > capacity || m.first > m1.first) m
-    else m1
-}
+
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     val weight = mutableListOf<Int>()
@@ -419,9 +413,26 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         weight.add(pair.first)
         price.add(pair.second)
     }
-    val res = mutableSetOf<String>()
-    for (i in maxPrice(weight, price, capacity, tr).second) {
-        res.add(i)
+    val p: MutableList<Pair<Pair<Int, Int>, MutableSet<String>>> = mutableListOf(
+        Pair(
+            Pair(capacity, 0),
+            mutableSetOf()
+        )
+    )
+    var res = Pair(0, mutableSetOf<String>())
+    for (i in weight.indices) {
+        for (j in p.toMutableList()) {
+            if (j.first.first >= weight[i]) {
+                p.add(
+                    Pair(
+                        Pair(j.first.first - weight[i], j.first.second + price[i]),
+                        j.second.toMutableSet()
+                    )
+                )
+                p.last().second.add(tr[i])
+            }
+            if (p.last().first.second > res.first) res = Pair(p.last().first.second, p.last().second)
+        }
     }
-    return res
+    return res.second
 }
