@@ -94,7 +94,7 @@ fun dateStrToDigit(str: String): String {
             "августа", "сентября", "октября", "ноября", "декабря"
         ).indexOf(s[1])
         val year = s[2].toInt()
-        if (month == -1 || daysInMonth(month, year) < day) ""
+        if (month == -1 || daysInMonth(month, year) < day) return ""
         String.format("%02d.%02d.%d", day, month, year)
     } catch (e: NumberFormatException) {
         ""
@@ -119,7 +119,7 @@ fun dateDigitToStr(digital: String): String {
         val day = s[0].toInt()
         val month = s[1].toInt()
         val year = s[2].toInt()
-        if (s.size != 3 || month !in 1..12 || daysInMonth(month, year) < day) ""
+        if (s.size != 3 || month !in 1..12 || daysInMonth(month, year) < day) return ""
         "$day " + listOf(
             "", "января", "февраля", "марта", "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября", "ноября", "декабря"
