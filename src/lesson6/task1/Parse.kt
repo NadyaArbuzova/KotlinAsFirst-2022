@@ -225,7 +225,7 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (!Regex("""^([А-я]* \d+(\.\d)?; )*([А-я]* \d+(\.\d)?)$""").matches(description)) return ""
+    if (!Regex("""^([А-яA-z]* \d+(\.\d)?; )*([А-я]* \d+(\.\d)?)$""").matches(description)) return ""
     var res = Pair("", 0.0)
     for (i in description.split("; ")) {
         if (res.second < i.split(" ")[1].toDouble()) res = Pair(i.split(" ")[0], i.split(" ")[1].toDouble())
