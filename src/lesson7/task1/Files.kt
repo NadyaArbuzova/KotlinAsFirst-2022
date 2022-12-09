@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.util.regex.Pattern
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -82,7 +83,24 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    val s = File(inputName).readText().lowercase()
+    for (i in substrings) {
+        res[i] = 0
+    }
+    for (key in res.keys) {
+        var lastIndex = 0
+        while (lastIndex != -1){
+            lastIndex = s.indexOf(key.lowercase(), lastIndex)
+            if (lastIndex != -1) {
+                res[key] = res[key]!! + 1
+                lastIndex += 1
+            }
+        }
+    }
+    return res
+}
 
 
 /**
@@ -99,7 +117,15 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var s = File(inputName).readText()
+    for (i in "ЖЧШЩжчшщ") {
+        for ((a, b) in mapOf("Ы" to "И", "ы" to "и", "Я" to "А", "я" to "а", "Ю" to "У", "ю" to "у")) {
+            s = s.replace(i.toString() + a, i.toString() + b)
+        }
+    }
+    writer.write(s)
+    writer.close()
 }
 
 /**
