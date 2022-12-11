@@ -149,8 +149,10 @@ fun centerFile(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val lineLength = File(inputName).readLines().max().trim().length
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) writer.write("".padStart(lineLength / 2, ' '))
-        else writer.write(line.trim().padStart((lineLength + line.trim().length) / 2, ' '))
+        if (line.isEmpty()) {
+            if (lineLength > 0) writer.write("".padStart(lineLength / 2, ' '))
+            else writer.write("")
+        } else writer.write(line.trim().padStart((lineLength + line.trim().length) / 2, ' '))
         writer.newLine()
     }
     writer.close()
