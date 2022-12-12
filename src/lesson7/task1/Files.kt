@@ -497,7 +497,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var numberOfDashes: Int
     var remainder = (lhv.toString().dropLast(lhv.toString().length - inDiv.toString().length).toInt()).toString()
     val writer = File(outputName).bufferedWriter()
-    writer.write(" $lhv | $rhv")
+    if (inDiv!=0) writer.write(" $lhv | $rhv")
+    else writer.write("$lhv | $rhv".padStart(5 + rhv.toString().length, ' '))
     for (i in 0 until div.toString().length) {
         inDiv = div.toString()[i].toString().toInt() * rhv
         numberOfDashes = max(inDiv.toString().length + 1, remainder.length)
