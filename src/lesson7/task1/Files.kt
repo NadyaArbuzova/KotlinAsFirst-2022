@@ -492,14 +492,32 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val a = lhv / rhv
-    var c = lhv.toString().length + rhv.toString().length + 4
-    val b = a.toString()[0].toString().toInt() * rhv
+    var b = a.toString()[0].toString().toInt() * rhv
+    var c = b.toString().length + 1
+    var l = (lhv.toString().dropLast(lhv.toString().length - b.toString().length).toInt() - b).toString()
     val writer = File(outputName).bufferedWriter()
-    writer.write(" $lhv | $rhv\n-$b".padEnd(c-a.toString().length-b.toString().length - 1, ' '))
-
-    for (i in a.toString()) {
-
+    writer.write(
+        " $lhv | $rhv\n-$b" + "$a".padStart(
+            lhv.toString().length + 4 + a.toString().length - b.toString().length - 1,
+            ' '
+        )
+    )
+    for (i in 1 until a.toString().length) {
+        writer.newLine()
+        writer.write("".padStart(b.toString().length + 1, '-').padStart(c, ' '))
+        l += lhv.toString()[c - 1]
+        c++
+        writer.newLine()
+        writer.write(l.padStart(c, ' '))
+        writer.newLine()
+        b = a.toString()[i].toString().toInt() * rhv
+        l = (l.toInt() - b).toString()
+        writer.write("-$b".padStart(c, ' '))
     }
+    writer.newLine()
+    writer.write("".padStart(b.toString().length + 1, '-').padStart(c, ' '))
+    writer.newLine()
+    writer.write(l.padStart(c, ' '))
     writer.close()
 }
 
