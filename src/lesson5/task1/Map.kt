@@ -2,9 +2,6 @@
 
 package lesson5.task1
 
-import ru.spbstu.wheels.NullableMonad.filter
-import ru.spbstu.wheels.asMap
-import ru.spbstu.wheels.defaultCopy
 import kotlin.math.max
 
 // Урок 5: ассоциативные массивы и множества
@@ -405,34 +402,40 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
 
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    val weight = mutableListOf<Int>()
-    val price = mutableListOf<Int>()
+    val wp = mutableListOf<Pair<Int, Int>>()
     val tr = mutableListOf<String>()
     for ((key, pair) in treasures) {
         tr.add(key)
-        weight.add(pair.first)
-        price.add(pair.second)
+        wp.add(Pair(pair.first, pair.second))
     }
-    val p: MutableList<Pair<Pair<Int, Int>, MutableSet<String>>> = mutableListOf(
-        Pair(
-            Pair(capacity, 0),
-            mutableSetOf()
-        )
-    )
-    var res = Pair(0, mutableSetOf<String>())
-    for (i in weight.indices) {
-        for (j in p.toMutableList()) {
-            if (j.first.first >= weight[i]) {
-                p.add(
-                    Pair(
-                        Pair(j.first.first - weight[i], j.first.second + price[i]),
-                        j.second.toMutableSet()
-                    )
-                )
-                p.last().second.add(tr[i])
-            }
-            if (p.last().first.second > res.first) res = Pair(p.last().first.second, p.last().second)
+    val price: MutableList<MutableList<Int>> = mutableListOf()
+    val tr1: MutableList<MutableList<MutableList<String>>> = mutableListOf()
+    for (i in 0..wp.size) {
+        price.add(mutableListOf())
+        tr1.add(mutableListOf())
+        for (j in 0..capacity) {
+            price[i].add(0)
+            tr1[i].add(mutableListOf())
         }
     }
-    return res.second
+    for (i in 0..wp.size) {
+        for (j in 0..capacity) {
+            if (i != 0 && j != 0) {
+                if (wp[i - 1].first > j) {
+                    price[i][j] = price[i - 1][j]
+                    tr1[i][j] = tr1[i - 1][j]
+                } else {
+                    if (price[i - 1][j] > wp[i - 1].second + price[i - 1][j - wp[i - 1].first]) {
+                        price[i][j] = price[i - 1][j]
+                        tr1[i][j] = tr1[i - 1][j]
+                    } else {
+                        price[i][j] = wp[i - 1].second + price[i - 1][j - wp[i - 1].first]
+                        tr1[i][j] = tr1[i - 1][j - wp[i - 1].first]
+                        tr1[i][j].add(tr[i - 1])
+                    }
+                }
+            }
+        }
+    }
+    return tr1[wp.size][capacity].toSet()
 }
