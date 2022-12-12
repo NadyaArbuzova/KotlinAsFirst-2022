@@ -431,7 +431,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                         tr1[i][j] = tr1[i - 1][j]
                     } else {
                         price[i][j] = wp[i - 1].second + price[i - 1][j - wp[i - 1].first]
-                        tr1[i][j] = tr1[i - 1][j - wp[i - 1].first]
+                        tr1[i][j] = (tr1[i][j] + tr1[i - 1][j - wp[i - 1].first]).toMutableList()
                         tr1[i][j].add(tr[i - 1])
                     }
                 }
