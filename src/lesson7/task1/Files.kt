@@ -3,7 +3,6 @@
 package lesson7.task1
 
 import java.io.File
-import java.util.regex.Pattern
 import kotlin.math.max
 
 // Урок 7: работа с файлами
@@ -492,32 +491,34 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    val a = lhv / rhv
-    var b = a.toString()[0].toString().toInt() * rhv
-    var c = b.toString().length + 1
-    var l = (lhv.toString().dropLast(lhv.toString().length - b.toString().length).toInt()).toString()
+    val div = lhv / rhv
+    var inDiv = div.toString()[0].toString().toInt() * rhv
+    var numberOfSpaces = inDiv.toString().length + 1
+    var numberOfDashes: Int
+    var remainder = (lhv.toString().dropLast(lhv.toString().length - inDiv.toString().length).toInt()).toString()
     val writer = File(outputName).bufferedWriter()
     writer.write(" $lhv | $rhv")
-    for (i in 0 until a.toString().length) {
-        b = a.toString()[i].toString().toInt() * rhv
-        l = (l.toInt() - b).toString()
-        if (lhv.toString().length >= c) {
-            l += lhv.toString()[c - 1]
+    for (i in 0 until div.toString().length) {
+        inDiv = div.toString()[i].toString().toInt() * rhv
+        numberOfDashes = max(inDiv.toString().length + 1, remainder.length)
+        remainder = (remainder.toInt() - inDiv).toString()
+        if (lhv.toString().length >= numberOfSpaces) {
+            remainder += lhv.toString()[numberOfSpaces - 1]
         }
         writer.newLine()
-        if (a.toString()[i] == '0') writer.write("-0".padStart(max(l.length, c), ' '))
-        else writer.write("-$b".padStart(c, ' '))
+        if (div.toString()[i] == '0') writer.write("-0".padStart(max(remainder.length, numberOfSpaces), ' '))
+        else writer.write("-$inDiv".padStart(numberOfSpaces, ' '))
         if (i == 0) writer.write(
-            "$a".padStart(
-                lhv.toString().length + 3 + a.toString().length - b.toString().length,
+            "$div".padStart(
+                lhv.toString().length + 3 + div.toString().length - inDiv.toString().length,
                 ' '
             )
         )
         writer.newLine()
-        writer.write("".padStart(b.toString().length + 1, '-').padStart(c, ' '))
-        if (lhv.toString().length >= c) c++
+        writer.write("".padStart(numberOfDashes, '-').padStart(numberOfSpaces, ' '))
+        if (lhv.toString().length >= numberOfSpaces) numberOfSpaces++
         writer.newLine()
-        writer.write(l.padStart(c, ' '))
+        writer.write(remainder.padStart(numberOfSpaces, ' '))
     }
     writer.close()
 }
