@@ -491,6 +491,15 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val a = lhv / rhv
+    var c = lhv.toString().length + rhv.toString().length + 4
+    val b = a.toString()[0].toString().toInt() * rhv
+    val writer = File(outputName).bufferedWriter()
+    writer.write(" $lhv | $rhv\n-$b".padEnd(c-a.toString().length-b.toString().length - 1, ' '))
+
+    for (i in a.toString()) {
+
+    }
+    writer.close()
 }
 

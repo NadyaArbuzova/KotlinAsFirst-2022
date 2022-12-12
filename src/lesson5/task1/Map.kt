@@ -425,7 +425,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                     price[i][j] = price[i - 1][j]
                     tr1[i][j] = tr1[i - 1][j]
                 } else {
-                    if (price[i - 1][j] > wp[i - 1].second + price[i - 1][j - wp[i - 1].first]) {
+                    if (price[i - 1][j] >= wp[i - 1].second + price[i - 1][j - wp[i - 1].first]) {
                         price[i][j] = price[i - 1][j]
                         tr1[i][j] = tr1[i - 1][j]
                     } else {
