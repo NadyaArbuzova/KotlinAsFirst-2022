@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+import ru.spbstu.wheels.toMap
 import kotlin.math.max
 
 // Урок 5: ассоциативные массивы и множества
@@ -404,7 +405,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     val wp = mutableListOf<Pair<Int, Int>>()
     val tr = mutableListOf<String>()
-    for ((key, pair) in treasures) {
+    for ((key, pair) in treasures.entries.sortedBy { it.value.first }.toMap()) {
         tr.add(key)
         wp.add(Pair(pair.first, pair.second))
     }
