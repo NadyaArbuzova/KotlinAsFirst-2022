@@ -4,6 +4,7 @@ package lesson7.task1
 
 import java.io.File
 import java.util.regex.Pattern
+import kotlin.math.max
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -494,30 +495,30 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val a = lhv / rhv
     var b = a.toString()[0].toString().toInt() * rhv
     var c = b.toString().length + 1
-    var l = (lhv.toString().dropLast(lhv.toString().length - b.toString().length).toInt() - b).toString()
+    var l = (lhv.toString().dropLast(lhv.toString().length - b.toString().length).toInt()).toString()
     val writer = File(outputName).bufferedWriter()
-    writer.write(
-        " $lhv | $rhv\n-$b" + "$a".padStart(
-            lhv.toString().length + 4 + a.toString().length - b.toString().length - 1,
-            ' '
-        )
-    )
-    for (i in 1 until a.toString().length) {
-        writer.newLine()
-        writer.write("".padStart(b.toString().length + 1, '-').padStart(c, ' '))
-        l += lhv.toString()[c - 1]
-        c++
-        writer.newLine()
-        writer.write(l.padStart(c, ' '))
-        writer.newLine()
+    writer.write(" $lhv | $rhv")
+    for (i in 0 until a.toString().length) {
         b = a.toString()[i].toString().toInt() * rhv
         l = (l.toInt() - b).toString()
-        writer.write("-$b".padStart(c, ' '))
+        if (lhv.toString().length >= c) {
+            l += lhv.toString()[c - 1]
+        }
+        writer.newLine()
+        if (a.toString()[i] == '0') writer.write("-0".padStart(max(l.length, c), ' '))
+        else writer.write("-$b".padStart(c, ' '))
+        if (i == 0) writer.write(
+            "$a".padStart(
+                lhv.toString().length + 3 + a.toString().length - b.toString().length,
+                ' '
+            )
+        )
+        writer.newLine()
+        writer.write("".padStart(b.toString().length + 1, '-').padStart(c, ' '))
+        if (lhv.toString().length >= c) c++
+        writer.newLine()
+        writer.write(l.padStart(c, ' '))
     }
-    writer.newLine()
-    writer.write("".padStart(b.toString().length + 1, '-').padStart(c, ' '))
-    writer.newLine()
-    writer.write(l.padStart(c, ' '))
     writer.close()
 }
 
