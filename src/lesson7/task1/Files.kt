@@ -497,29 +497,37 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var numberOfDashes: Int
     var remainder = (lhv.toString().dropLast(lhv.toString().length - inDiv.toString().length).toInt()).toString()
     val writer = File(outputName).bufferedWriter()
-    if (inDiv!=0) writer.write(" $lhv | $rhv")
-    else writer.write("$lhv | $rhv".padStart(5 + rhv.toString().length, ' '))
+    if (inDiv != 0) {
+        writer.write(" $lhv | $rhv")
+    } else {
+        writer.write("$lhv | $rhv".padStart(5 + rhv.toString().length, ' '))
+        remainder = lhv.toString()
+    }
     for (i in 0 until div.toString().length) {
         inDiv = div.toString()[i].toString().toInt() * rhv
         numberOfDashes = max(inDiv.toString().length + 1, remainder.length)
         remainder = (remainder.toInt() - inDiv).toString()
-        if (lhv.toString().length >= numberOfSpaces) {
+        if (lhv.toString().length >= numberOfSpaces && remainder != lhv.toString()) {
             remainder += lhv.toString()[numberOfSpaces - 1]
         }
         writer.newLine()
         if (div.toString()[i] == '0') writer.write("-0".padStart(max(remainder.length, numberOfSpaces), ' '))
         else writer.write("-$inDiv".padStart(numberOfSpaces, ' '))
-        if (i == 0) writer.write(
-            "$div".padStart(
-                lhv.toString().length + 3 + div.toString().length - inDiv.toString().length,
-                ' '
+        if (i == 0) {
+            if(inDiv != 0) writer.write(
+                "$div".padStart(
+                    lhv.toString().length + 3 + div.toString().length - inDiv.toString().length,
+                    ' '
+                )
             )
-        )
+            else writer.write("$div".padStart(4, ' '))
+        }
         writer.newLine()
         writer.write("".padStart(numberOfDashes, '-').padStart(numberOfSpaces, ' '))
         if (lhv.toString().length >= numberOfSpaces) numberOfSpaces++
         writer.newLine()
         writer.write(remainder.padStart(numberOfSpaces, ' '))
+
     }
     writer.close()
 }
