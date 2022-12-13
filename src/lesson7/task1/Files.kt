@@ -341,10 +341,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) {
+        if (line.matches(Regex("""^ *$"""))) {
             if (stackP.isNotEmpty()) writer.write(stackP.pop())
         } else {
-            if (stackP.isEmpty()) {
+            if (stackP.isEmpty() && line.matches(Regex("""[^\n]+"""))) {
                 stackP.push("</p><p>")
             }
             val matcher = Pattern.compile("(~~|\\*+)|([^*~]*)").matcher(line)
