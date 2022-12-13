@@ -348,17 +348,18 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 var s = matcher.group()
                 if (s.matches(Regex("""([^*~]*)"""))) writer.write(s)
                 else {
-                    if (s.length > 2 && "*" !in stack.top.toString()) {
-                        stack.push("**")
-                        stack.push("*")
-                    }
-                    if (s.length > 2 && "*" in stack.top.toString()) {
-                        if (stack.pop() == "*") {
-                            writer.write("</i>")
-                            s = "**"
+                    while (s.length > 2) {
+                        if ("*" in stack.top.toString()) {
+                            if (stack.pop() == "*") {
+                                writer.write("</i>")
+                                s = s.dropLast(1)
+                            } else {
+                                writer.write("</b>")
+                                s = s.dropLast(2)
+                            }
                         } else {
-                            writer.write("</b>")
-                            s = "*"
+                            stack.push("**")
+                            s = s.dropLast(2)
                         }
                     }
                     if (stack.top.toString() == s) writer.write(
