@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import ru.spbstu.wheels.Stack
+import ru.spbstu.wheels.isNotEmpty
 import ru.spbstu.wheels.stack
 import ru.spbstu.wheels.toMap
 import java.io.File
@@ -336,13 +337,16 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val stack: Stack<String> = stack()
+    val stackP: Stack<String> = stack()
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) {
-            writer.write("</p>")
-            writer.write("<p>")
+        if (line.isEmpty() && stackP.isNotEmpty()) {
+            writer.write(stackP.pop())
         } else {
+            if (stackP.isEmpty()){
+                stackP.push("</p><p>")
+            }
             val matcher = Pattern.compile("(~~|\\*+)|([^*~]*)").matcher(line)
             while (matcher.find()) {
                 var s = matcher.group()
