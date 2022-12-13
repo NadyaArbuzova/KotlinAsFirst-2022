@@ -560,24 +560,38 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var numberOfDashes: Int
     var remainder = (lhv.toString().dropLast(lhv.toString().length - inDiv.toString().length).toInt()).toString()
     val writer = File(outputName).bufferedWriter()
-    if (inDiv != 0) {
-        writer.write(" $lhv | $rhv")
-    } else {
-        writer.write("$lhv | $rhv".padStart(5 + rhv.toString().length, ' '))
-        remainder = lhv.toString()
+    when (div) {
+        0 -> {
+            writer.write("$lhv | $rhv".padStart(5 + rhv.toString().length, ' '))
+            remainder = lhv.toString()
+        }
+
+        in 1..9 -> {
+            numberOfSpaces = max(inDiv.toString().length + 1, lhv.toString().length)
+            writer.write("$lhv | $rhv".padStart(numberOfSpaces + rhv.toString().length, ' '))
+            remainder = lhv.toString()
+//            writer.write("-$inDiv".padStart(numberOfDashes, ' '))
+//            writer.newLine()
+//            writer.write("".padStart(max(numberOfDashes, lhv.toString().length), '-'))
+//            writer.newLine()
+//            writer.write("${lhv - inDiv}".padStart(numberOfDashes, ' '))
+//            writer.close()
+        }
+
+        else -> writer.write(" $lhv | $rhv")
     }
     for (i in 0 until div.toString().length) {
         inDiv = div.toString()[i].toString().toInt() * rhv
         numberOfDashes = max(inDiv.toString().length + 1, remainder.length)
         remainder = (remainder.toInt() - inDiv).toString()
-        if (lhv.toString().length >= numberOfSpaces && remainder != lhv.toString()) {
+        if (lhv.toString().length >= numberOfSpaces && remainder != lhv.toString() && div > 9) {
             remainder += lhv.toString()[numberOfSpaces - 1]
         }
         writer.newLine()
         if (div.toString()[i] == '0') writer.write("-0".padStart(max(remainder.length, numberOfSpaces), ' '))
         else writer.write("-$inDiv".padStart(numberOfSpaces, ' '))
         if (i == 0) {
-            if (inDiv != 0) writer.write(
+            if (inDiv != 0 && div > 9) writer.write(
                 "$div".padStart(
                     lhv.toString().length + 3 + div.toString().length - inDiv.toString().length,
                     ' '
@@ -589,7 +603,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         writer.newLine()
         writer.write("".padStart(numberOfDashes, '-').padStart(numberOfSpaces, ' '))
-        if (lhv.toString().length >= numberOfSpaces) numberOfSpaces++
+        if (lhv.toString().length >= numberOfSpaces && div > 9) numberOfSpaces++
         writer.newLine()
         writer.write(remainder.padStart(numberOfSpaces, ' '))
 
