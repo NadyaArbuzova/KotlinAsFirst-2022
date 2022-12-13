@@ -342,7 +342,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.matches(Regex("""^[ \n]*$"""))) {
+        if (line.matches(Regex("""^[ \n\t\r]*$"""))) {
             if (stackP.isEmpty()) stackP.push("</p><p>")
         } else {
             if (stackP.isNotEmpty()) writer.write(stackP.pop())
@@ -388,7 +388,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         writer.newLine()
     }
     if (stackP.isNotEmpty()) writer.write(stackP.pop())
-    writer.write("""</p></body></html>""")
+    writer.write("</p></body></html>")
     writer.close()
 }
 
