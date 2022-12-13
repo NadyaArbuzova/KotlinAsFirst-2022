@@ -338,6 +338,7 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val stack: Stack<String> = stack()
     val stackP: Stack<String> = stack()
+    stackP.push("")
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
