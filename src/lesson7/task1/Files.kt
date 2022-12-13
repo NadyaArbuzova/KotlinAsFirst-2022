@@ -387,6 +387,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
         writer.newLine()
     }
+    if (stackP.isNotEmpty()) writer.write(stackP.pop())
     writer.write("""</p></body></html>""")
     writer.close()
 }
