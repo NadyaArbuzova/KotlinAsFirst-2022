@@ -568,7 +568,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
         in 1..9 -> {
             numberOfSpaces = max(inDiv.toString().length + 1, lhv.toString().length)
-            writer.write("$lhv | $rhv".padStart(numberOfSpaces + rhv.toString().length, ' '))
+            writer.write("$lhv | $rhv".padStart(numberOfSpaces + rhv.toString().length + 3, ' '))
             remainder = lhv.toString()
 //            writer.write("-$inDiv".padStart(numberOfDashes, ' '))
 //            writer.newLine()
