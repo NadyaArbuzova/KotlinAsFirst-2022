@@ -2,7 +2,11 @@
 
 package lesson7.task1
 
+import ru.spbstu.wheels.Stack
+import ru.spbstu.wheels.stack
+import ru.spbstu.wheels.toMap
 import java.io.File
+import java.util.regex.Pattern
 import kotlin.math.max
 
 // Урок 7: работа с файлами
@@ -209,7 +213,14 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    for (i in File(inputName).readText().split(Regex("""[^A-zА-я]"""))) {
+        if (i.lowercase() !in res) res[i.lowercase()] = 1
+        else res[i.lowercase()] = res[i.lowercase()]!! + 1
+    }
+    return res.entries.sortedBy { it.value }.reversed().dropLast(res.size - 20).toMap()
+}
 
 /**
  * Средняя (14 баллов)
@@ -324,7 +335,56 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val stack: Stack<String> = stack()
+    val writer = File(outputName).bufferedWriter()
+    writer.write("<html><body><p>")
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) {
+            writer.write("</p>")
+            writer.write("<p>")
+        } else {
+            val matcher = Pattern.compile("(~~|\\*+)|([^*~]*)").matcher(line)
+            while (matcher.find()) {
+                var s = matcher.group()
+                if (s.matches(Regex("""([^*~]*)"""))) writer.write(s)
+                else {
+                    if (s.length > 2 && "*" !in stack.top.toString()) {
+                        stack.push("**")
+                        stack.push("*")
+                    }
+                    if (s.length > 2 && "*" in stack.top.toString()) {
+                        if (stack.pop() == "*") {
+                            writer.write("</i>")
+                            s = "**"
+                        } else {
+                            writer.write("</b>")
+                            s = "*"
+                        }
+                    }
+                    if (stack.top.toString() == s) writer.write(
+                        when (stack.pop()) {
+                            "*" -> "</i>"
+                            "**" -> "</b>"
+                            else -> "</s>"
+                        }
+                    )
+                    else {
+                        stack.push(s)
+                        writer.write(
+                            when (s) {
+                                "*" -> "<i>"
+                                "**" -> "<b>"
+                                else -> "<s>"
+                            }
+                        )
+                    }
+                }
+            }
+        }
+        writer.newLine()
+    }
+    writer.write("""</p></body></html>""")
+    writer.close()
 }
 
 /**
@@ -514,13 +574,15 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         if (div.toString()[i] == '0') writer.write("-0".padStart(max(remainder.length, numberOfSpaces), ' '))
         else writer.write("-$inDiv".padStart(numberOfSpaces, ' '))
         if (i == 0) {
-            if(inDiv != 0) writer.write(
+            if (inDiv != 0) writer.write(
                 "$div".padStart(
                     lhv.toString().length + 3 + div.toString().length - inDiv.toString().length,
                     ' '
                 )
             )
-            else writer.write("$div".padStart(4, ' '))
+            else writer.write(
+                "$div".padStart(4, ' ')
+            )
         }
         writer.newLine()
         writer.write("".padStart(numberOfDashes, '-').padStart(numberOfSpaces, ' '))
