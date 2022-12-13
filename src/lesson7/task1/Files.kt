@@ -344,7 +344,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         if (line.isEmpty()) {
             if (stackP.isNotEmpty()) writer.write(stackP.pop())
         } else {
-            if (stackP.isEmpty()){
+            if (stackP.isEmpty()) {
                 stackP.push("</p><p>")
             }
             val matcher = Pattern.compile("(~~|\\*+)|([^*~]*)").matcher(line)
@@ -353,17 +353,17 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 if (s.matches(Regex("""([^*~]*)"""))) writer.write(s)
                 else {
                     while (s.length > 2) {
-                        if ("*" in stack.top.toString()) {
+                        s = if ("*" in stack.top.toString()) {
                             if (stack.pop() == "*") {
                                 writer.write("</i>")
-                                s = s.dropLast(1)
+                                s.dropLast(1)
                             } else {
                                 writer.write("</b>")
-                                s = s.dropLast(2)
+                                s.dropLast(2)
                             }
                         } else {
                             stack.push("**")
-                            s = s.dropLast(2)
+                            s.dropLast(2)
                         }
                     }
                     if (stack.top.toString() == s) writer.write(
