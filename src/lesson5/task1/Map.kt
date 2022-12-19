@@ -159,7 +159,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val c = mutableSetOf<String>()
-    val bSet = b.toSet();
+    val bSet = b.toSet()
     for (i in a.toSet()) {
         if (i in bSet) {
             c.add(i)
@@ -296,12 +296,9 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
 fun hasAnagrams(words: List<String>): Boolean {
     val a = mutableMapOf<Int, MutableList<Set<Char>>>()
     for (i in words) {
-        if (i.length !in a) {
-            a[i.length] = mutableListOf(i.toSet())
-        } else {
-            if (a[i.length]?.contains(i.toSet()) == true) return true
-            else a[i.length]?.add(i.toSet())
-        }
+        if (i.length !in a) a[i.length] = mutableListOf(i.toSet())
+        else if (a[i.length]?.contains(i.toSet()) == true) return true
+        else a[i.length]?.add(i.toSet())
     }
     return false
 }
@@ -425,15 +422,13 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                 if (wp[i - 1].first > j) {
                     price[i][j] = price[i - 1][j]
                     tr1[i][j] = tr1[i - 1][j]
+                } else if (price[i - 1][j] >= wp[i - 1].second + price[i - 1][j - wp[i - 1].first]) {
+                    price[i][j] = price[i - 1][j]
+                    tr1[i][j] = tr1[i - 1][j]
                 } else {
-                    if (price[i - 1][j] >= wp[i - 1].second + price[i - 1][j - wp[i - 1].first]) {
-                        price[i][j] = price[i - 1][j]
-                        tr1[i][j] = tr1[i - 1][j]
-                    } else {
-                        price[i][j] = wp[i - 1].second + price[i - 1][j - wp[i - 1].first]
-                        tr1[i][j] = (tr1[i][j] + tr1[i - 1][j - wp[i - 1].first]).toMutableList()
-                        tr1[i][j].add(tr[i - 1])
-                    }
+                    price[i][j] = wp[i - 1].second + price[i - 1][j - wp[i - 1].first]
+                    tr1[i][j] = (tr1[i][j] + tr1[i - 1][j - wp[i - 1].first]).toMutableList()
+                    tr1[i][j].add(tr[i - 1])
                 }
             }
         }

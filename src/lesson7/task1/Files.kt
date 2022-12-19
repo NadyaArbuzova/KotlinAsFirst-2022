@@ -123,13 +123,16 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun sibilants(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var s = File(inputName).readText()
-    for (i in "ЖЧШЩжчшщ") {
-        for ((a, b) in mapOf("Ы" to "И", "ы" to "и", "Я" to "А", "я" to "а", "Ю" to "У", "ю" to "у")) {
-            s = s.replace(i.toString() + a, i.toString() + b)
-        }
+    val s = File(inputName).readText()
+    val res = StringBuilder()
+    if (s.isNotEmpty()) res.append(s[0])
+    val m = mapOf('Ы' to 'И', 'ы' to 'и', 'Я' to 'А', 'я' to 'а', 'Ю' to 'У', 'ю' to 'у')
+    for (i in 1 until s.length) {
+        if (s[i - 1] in "ЖЧШЩжчшщ" && s[i] in m) {
+            res.append(m[s[i]])
+        } else res.append(s[i])
     }
-    writer.write(s)
+    writer.write(res.toString())
     writer.close()
 }
 
@@ -152,8 +155,9 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun centerFile(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    val lineLength = File(inputName).readLines().max().trim().length
-    for (line in File(inputName).readLines()) {
+    val s = File(inputName).readLines()
+    val lineLength = s.max().trim().length
+    for (line in s) {
         if (line.isEmpty()) {
             if (lineLength > 0) writer.write("".padStart(lineLength / 2, ' '))
             else writer.write("\n")
