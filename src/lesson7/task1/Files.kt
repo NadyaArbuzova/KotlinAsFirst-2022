@@ -609,7 +609,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         writer.newLine()
         writer.write("".padStart(numberOfDashes, '-').padStart(numberOfSpaces, ' '))
-        if (lhv.toString().length >= numberOfSpaces && div > 9) numberOfSpaces++
         writer.newLine()
         writer.write(remainder.padStart(numberOfSpaces, ' '))
 
