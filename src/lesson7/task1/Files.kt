@@ -391,7 +391,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
         writer.newLine()
     }
-    if (stackP.isNotEmpty()) writer.write(stackP.pop())
     writer.write("</p></body></html>")
     writer.close()
 }
@@ -609,6 +608,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         writer.newLine()
         writer.write("".padStart(numberOfDashes, '-').padStart(numberOfSpaces, ' '))
+        if (lhv.toString().length >= numberOfSpaces && div > 9) numberOfSpaces++
         writer.newLine()
         writer.write(remainder.padStart(numberOfSpaces, ' '))
 
